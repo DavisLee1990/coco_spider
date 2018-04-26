@@ -46,7 +46,7 @@ class NovelSavePipeline(object):
         self.queue_conn = redis.Redis(connection_pool=self.novel_queue_pool)
     @classmethod
     def from_crawler(cls, crawler):
-        redis_config = crawler.settings.get("DATABASES_CONFIG")["novel_redis_config"]
+        redis_config = crawler.settings.get("DATABASES_CONFIG")["novel_queue_config"]
         return cls(
             addr1=redis_config["redis_url"],
             port1=redis_config["redis_port"],
@@ -54,7 +54,7 @@ class NovelSavePipeline(object):
         )
     def process_item(self, item, spider):
         try:
-            #判断5号库是否有数据防止重复加入小说(由于网站不断更新小说在网络上)
+            #判断4号库是否有数据防止重复加入小说(由于网站不断更新小说在网络上)
             if "novel_img" in item:
                 if self.queue_conn.exists(item["novel_url"]) != 1:
                     #不在库里面才加入

@@ -1,0 +1,32 @@
+中文版
+程序介绍:
+   这是一个普通的分布式队列爬虫.主要运用技术:
+   1,采用非关系型数据库(redis)服务于分布式技术
+   2,运用了多进程异步技术(scrapy内部不允许除__main__以外的线程执行，所以不能启用多线程),因为本项目至少有1亿次请求(运行进程的个数利用进程池控制)
+   3,章节爬取的顺序采用了redis队列控制.
+   4,因为涉及的数据量比较大(800G),所以把数据库建立在内网上有一个T硬盘的电脑上面,并且利用小说有不同的类型进行分表.
+注意事项：
+   1,如果进程开启太多/网络资源被其他设备占用过多，会报错：
+        HTTPSConnectionPool(host='m.xs.la', port=443): Max retries exceeded with url
+   2,也许以后会更新分布式自动爬虫,因为章节是不断的更新的.
+程序运行:
+    首先你需要修改/coco_spider/coco_spider/settings.py里面的数据库连接信息以及最大进程数
+    然后你需要运行/coco_spider/coco_spider/orm_model_class.py来创建表结构
+    然后运行/coco_spider/coco_spider/main_controller/main的novel_main.py和chapter_main.py会分别开启小说爬虫和章节爬虫
+
+English
+Introduce Project:
+  This's distributed and basic and queue spdier for novel.Required techniques:
+  No.1,Nosql Database for distributed;
+  No.2,Process to asynchronization(Scrapy can't be running without '__main__',so can’t run by threading),because it's one hundred million requests(controlling by Process pool);
+  No.3,Chapter's order by queue;
+  No.4,because data is so large,so database on other computer,and to scale up chapter form by novel's type.
+Notice:
+  No.1,if processes is so much or other application have high percent internet connection.Will be having a error:
+        HTTPSConnectionPool(host='m.xs.la', port=443): Max retries exceeded with url
+  No.2,annotation in the project is Chinese.
+  No.3,Maybe I will update autokinetic spider,because chapter will be updating
+Project run:
+    At first,you need to change databases connection informations and max allowed process from '/coco_spider/coco_spider/settings.py'
+    Then you need to run '/coco_spider/coco_spider/orm_model_class.py' to build list structure
+    Then start novel spider and chapter spider by novel_main.py and chapter_main.py under '/coco_spider/coco_spider/main_controller/main'

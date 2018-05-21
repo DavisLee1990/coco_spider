@@ -14,7 +14,7 @@ def trimNovel(str):
     return str.replace('\r','').replace('\n','').replace('\t','').replace('\u3000\u3000','').replace('\xa0','').strip()
 def trimChapter(str):
     #可抽取为工具类方法
-    return str.replace('\r\n    \r\n','').replace('\t\r\n\t\r\n    \r\n','').replace('\u3000\u3000','\n').replace('\xa0',' ')
+    return str.replace('\r\n    \r\n','').replace('\t\r\n\t\r\n    \r\n','').replace('\u3000\u3000','<br/>').replace('\xa0',' ')
 
 
 class NovelPipeline(object):

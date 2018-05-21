@@ -94,10 +94,11 @@ ITEM_PIPELINES = {
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 DATABASES_CONFIG = {
+    #mysql数据库连接信息
     "mysql_config":{
         "user":"root",
         "pwd":123456,
-        "ip":"192.168.1.10",
+        "ip":"101.132.110.217",
         "db":"cocomini"
     },
     # 4号库存小说章节爬取的队列,一个小说开启一个线程
@@ -113,4 +114,5 @@ DATABASES_CONFIG = {
         "redis_db": 5
     }
 }
-MAX_PROCESS=10  #允许运行的最大进程,尝试过20,但是会导致http连接过多.
+MAX_PROCESS=5  #允许运行的最大进程,尝试过20,但是会导致http连接过多，如果网络无法承受会报错
+max_page=50   #爬取的页数

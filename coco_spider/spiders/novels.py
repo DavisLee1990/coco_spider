@@ -7,6 +7,7 @@ from lxml import etree
 import redis
 import json
 from urllib import parse
+from coco_spider.settings import max_page
 
 class NovelsSpider(scrapy.Spider):
     name = 'novels'
@@ -35,8 +36,8 @@ class NovelsSpider(scrapy.Spider):
             # 二,如果页面爬取完毕就进入下一页爬取
             next_page = response.xpath('//a[@id="nextPage"]/@href').extract()[0]
             # print(next_page)
-            if next_page and page_num<500:
-                #跑500页也就是5000本小说
+            if next_page and page_num<max_page:
+                #爬取设置的页数
                 page_num+=1
                 yield scrapy.Request(url=parse.urljoin("https://m.xs.la",next_page),meta={"page_num":page_num},callback=self.parse_novels)#递归下载
             else:

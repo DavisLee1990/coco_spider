@@ -4,6 +4,7 @@ from coco_spider.main_controller.spider_order import chapter_order
 from coco_spider.settings import DATABASES_CONFIG,MAX_PROCESS
 import redis
 import threading
+import time
 
 novel_queue_config=DATABASES_CONFIG["novel_queue_config"]
 novel_redis_config=DATABASES_CONFIG["novel_redis_config"]
@@ -20,8 +21,9 @@ def start_chapterController():
     novel_queue = redis.Redis(connection_pool=redisPool.novel_queue_pool)
     novel_redis = redis.Redis(connection_pool=redisPool.novel_redis_pool)
     if __name__ == '__main__':
-        pool = Pool(processes=MAX_PROCESS)  # 启动5个进程池,同时允许5个进程爬取章节
+        pool = Pool(processes=MAX_PROCESS)  # 启动5个进程池,同时允许N个进程爬取章节
         while True:
+            time.sleep(3)
             # 不断循环查看novel_queue(4号库)里面是否加入新的任务队列(当任务完成,没有value的key会自动删除)
             keys = novel_queue.keys()
             if keys:
@@ -34,6 +36,9 @@ def start_chapterController():
                         # 开启一本小说的章节爬虫(小说线程个数由线程池控制)
 
                         #因为是分布式,这里一定要先把key的坑占到.不然这个任务可能会被别人领取而产生报错
+                        #注：这里会任务队列加入到进程池，但是会等待执行
                         novel_redis.set(key, "True")
                         pool.apply_async(func=chapter_order.start_chapterSpider,args=(key,))
+
+
 start_chapterController()
